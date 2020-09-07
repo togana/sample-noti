@@ -50,7 +50,7 @@ class WebPushFCM extends Notification implements ShouldQueue
      * @param  array  $data
      * @return void
      */
-    public function __construct(string $title, string $body, string $image, string $link, array $data = [])
+    public function __construct(string $title, string $body, string $image, string $link, array $data = null)
     {
         $this->title = $title;
         $this->body = $body;
