@@ -6,7 +6,7 @@ services:
       - db
     volumes:
       - ./src:/app:cached
-      # - app-vendor-volume:/app/vendor
+      - app-vendor-volume:/app/vendor
     working_dir: /app
   web:
     build: ./docker/local/nginx
