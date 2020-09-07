@@ -2,13 +2,15 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\NewAccessToken;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -36,4 +38,31 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @param string $value
+     */
+    public function setPasswordAttribute($value = '')
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * Create a new personal access token for the user.
+     *
+     * @param  string  $name
+     * @param  array  $abilities
+     * @return \Laravel\Sanctum\NewAccessToken
+     */
+    public function upsertToken(string $name, array $abilities = ['*'])
+    {
+        $this->tokens()->delete();
+        $token = $this->tokens()->create([
+            'name' => $name,
+            'token' => hash('sha256', $plainTextToken = Str::random(40)),
+            'abilities' => $abilities,
+        ]);
+
+        return new NewAccessToken($token, $token->id.'|'.$plainTextToken);
+    }
 }

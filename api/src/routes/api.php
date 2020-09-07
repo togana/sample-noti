@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/users', 'UserController@store')->name('users.store');
+Route::post('/users/login', 'UserController@login')->name('users.login');
+
+Route::middleware('auth:sanctum')->get('/users', 'UserController@show')->name('users.show');
