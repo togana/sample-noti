@@ -6,7 +6,7 @@ info:
     name: "Laravel Project"
     url: "Laravel Project URL"
 servers:
-  - url: "http://localhost"
+  - url: "http://localhost/api"
     description: "Local"
 
 paths:
@@ -58,42 +58,11 @@ paths:
           $ref: "#/components/responses/ValidationError"
         "500":
           $ref: "#/components/responses/InternalServerError"
-  "/users/{id}":
-    get:
+  "/users/login":
+    post:
       tags:
         - user
-      summary: "Get user"
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: "User"
-          content:
-            "application/json":
-              schema:
-                $ref: "#/components/schemas/User"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
-    patch:
-      tags:
-        - user
-      summary: "Update user"
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
+      summary: "Login user"
       requestBody:
         content:
           application/json:
