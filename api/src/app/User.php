@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -64,5 +65,21 @@ class User extends Authenticatable
         ]);
 
         return new NewAccessToken($token, $token->id.'|'.$plainTextToken);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function pushNotifications()
+    {
+        return $this->hasMany(PushNotification::class, 'token');
+    }
+
+    /**
+     * @return array
+     */
+    public function routeNotificationForFcm()
+    {
+        return $this->pushNotifications()->pluck('token')->toArray();
     }
 }
