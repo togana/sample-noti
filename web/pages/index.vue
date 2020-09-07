@@ -30,7 +30,36 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.extend({})
+import firebase from 'firebase'
+import { messaging } from '@/plugins/firebase'
+
+export default Vue.extend({
+  async asyncData () {
+    try {
+      await messaging.requestPermission()
+      const currentToken = await messaging.getToken()
+      if (currentToken) {
+        console.log('get token:', currentToken)
+        return { token: currentToken }
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  },
+  created () {
+    messaging.onTokenRefresh(async () => {
+      try {
+        await messaging.requestPermission()
+        const currentToken = await messaging.getToken()
+        if (currentToken) {
+          console.log('refresh token:', currentToken)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    })
+  }
+})
 </script>
 
 <style>
