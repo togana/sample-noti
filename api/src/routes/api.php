@@ -18,3 +18,4 @@ Route::post('/users', 'UserController@store')->name('users.store');
 Route::post('/users/login', 'UserController@login')->name('users.login');
 
 Route::middleware('auth:sanctum')->get('/users', 'UserController@show')->name('users.show');
+Route::middleware('auth:sanctum')->post('/push-notification/token', 'PushNotificationTokenController@store')->name('push-notification.token.show');

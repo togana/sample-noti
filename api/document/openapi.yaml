@@ -79,6 +79,27 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalServerError"
+  "/push-notification/token":
+    post:
+      tags:
+        - push-notification
+      summary: "add notification token"
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PushNotificationModel"
+      responses:
+        "200":
+          description: "User"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/PushNotification"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
 components:
   securitySchemes:
@@ -114,6 +135,25 @@ components:
       allOf:
         - $ref: "#/components/schemas/UserId"
         - $ref: "#/components/schemas/UserModel"
+    PushNotificationId:
+      type: object
+      properties:
+        id:
+          title: "PushNotification ID"
+          type: integer
+          example: 1
+    PushNotificationModel:
+      type: object
+      properties:
+        token:
+          title: "PushNotification Token"
+          type: string
+          example: "xxxxxx:xxxxxxxxxx"
+    PushNotification:
+      description: "PushNotification"
+      allOf:
+        - $ref: "#/components/schemas/PushNotificationId"
+        - $ref: "#/components/schemas/PushNotificationModel"
 
   responses:
     NoContent:
