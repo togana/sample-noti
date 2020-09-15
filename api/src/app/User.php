@@ -75,11 +75,25 @@ class User extends Authenticatable
         return $this->hasMany(PushNotification::class);
     }
 
+    public function exponentPushNotificationInterests()
+    {
+        $class = str_replace('\\', '.', get_class($this));
+        return ExponentPushNotificationInterest::where('key', $class . '.' . $this->id);
+    }
+
     /**
      * @return array
      */
     public function routeNotificationForFcm()
     {
         return $this->pushNotifications()->pluck('token')->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function routeNotificationForExpoPushNotifications()
+    {
+        return $this->exponentPushNotificationInterests()->pluck('key')->toArray();
     }
 }
