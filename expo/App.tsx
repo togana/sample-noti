@@ -9,6 +9,7 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
+    priority: Notifications.AndroidNotificationPriority.HIGH,
   }),
 });
 
